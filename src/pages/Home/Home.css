@@ -1,0 +1,13 @@
+button {
+    background: rgb(180, 180, 255);
+    color: black;
+    border: none;
+    box-shadow: none;
+    padding: 10px 25px;
+    cursor: pointer;
+    width: auto;
+}
+
+a {
+    text-decoration: none;
+}
