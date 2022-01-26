@@ -1,0 +1,1 @@
+export const QUIZ_RESPONSE_EXPIRATION_TIME = 1000 * 60 * 10;
