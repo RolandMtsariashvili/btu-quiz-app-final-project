@@ -1,3 +1,4 @@
+import { useState } from "react"
 import BooleanQuestion from "../BooleanQuestion"
 import MultiQuestion from "../MultiQuestion"
 import SingleQuestion from "../SingleQuestion"
@@ -5,13 +6,29 @@ import SingleQuestion from "../SingleQuestion"
 const QuestionWrapper = ({
   question,
   answer,
-  onRightAnswer,
-  onWrongAnswer,
   onNextQuestion,
 }) => {
+  const [answerFlag, setAnswerFlag] = useState('');
+
+  const onRightAnswer = async () => {
+    setAnswerFlag('green');
+    await setTimeout(() => {
+      setAnswerFlag('');
+      onNextQuestion(true);
+    }, 1000);
+  }
+
+  const onWrongAnswer = async () => {
+    setAnswerFlag('red');
+    await setTimeout(() => {
+      setAnswerFlag('');
+      onNextQuestion(false);
+    }, 1000);
+  }
+
   if (question.type === 'single') {
     return (
-      <div>
+      <div style={{backgroundColor: answerFlag}}>
         <SingleQuestion
           question={question}
           answer={answer}
@@ -24,7 +41,7 @@ const QuestionWrapper = ({
 
   if (question.type === 'multiple') {
     return (
-      <div>
+      <div style={{backgroundColor: answerFlag}}>
         <MultiQuestion
           question={question}
           answer={answer}
@@ -36,7 +53,7 @@ const QuestionWrapper = ({
   }
 
   return (
-    <div>
+    <div style={{backgroundColor: answerFlag}}>
       <BooleanQuestion
         question={question}
         answer={answer}

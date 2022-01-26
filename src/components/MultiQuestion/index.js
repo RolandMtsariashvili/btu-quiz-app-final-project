@@ -5,7 +5,6 @@ const MultiQuestion = ({
   answer,
   onRightAnswer,
   onWrongAnswer,
-  onNextQuestion,
 }) => {
   const initialSelection = {
     1: false,
@@ -29,7 +28,6 @@ const MultiQuestion = ({
 
     if (answer.answer.length !== selectedAnswersArray.length) {
       onWrongAnswer();
-      onNextQuestion();
       return;
     }
 
@@ -40,20 +38,18 @@ const MultiQuestion = ({
       if (sortedCorrectAnswers[i] != sortedUsersAnswers[i]) {
         console.log(sortedCorrectAnswers, sortedUsersAnswers);
         onWrongAnswer();
-        onNextQuestion();
         return;
       }
     }
     
     onRightAnswer();
-    onNextQuestion();
   }
   
   return (
     <form onSubmit={handleSubmit}>
       <h3>{question.question}</h3> 
       {question.options.map((option, index) => (
-        <label>
+        <label key={option}>
           <span>{option}</span>
           <input
             type="checkbox"

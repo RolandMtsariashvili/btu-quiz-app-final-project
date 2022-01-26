@@ -1,25 +1,25 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import BooleanQuestion from "../../components/BooleanQuestion";
-import MultiQuestion from "../../components/MultiQuestion";
 import QuestionWrapper from "../../components/QuestionWrapper";
-import SingleQuestion from "../../components/SingleQuestion";
 
 const Quiz = () => {
   const [isLoading, setLoading] = useState(false);
-  const [questions, setQuestions] = useState([]);
-  const [answers, setAnswers] = useState([]);
+  const [responseData, setResponseData] = useState();
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [rightAnswers, setRightAnswers] = useState(0);
 
   useEffect(async () => {
     setLoading(true);
     const { data } = await axios.get("http://my-json-server.typicode.com/DanielBarbakadze/Advanced-JS-and-React-Basics/db");
-    setQuestions(data.questions);
-    setAnswers(data.answers);
+    setResponseData(data);
+    setLoading(false);
   }, []);
 
-  const onNextQuestion = () => {
+  const onNextQuestion = (wasPreviousRight) => {
     setCurrentQuestion(currentQuestion + 1);
+    if (wasPreviousRight) {
+      setRightAnswers(rightAnswers + 1);
+    }
   }
 
   return (
@@ -27,15 +27,19 @@ const Quiz = () => {
       {isLoading && (
         <span>Loading</span>
       )}
-      {questions.length && answers.length && (
-        <QuestionWrapper
-          question={questions[2]}
-          answer={answers[2]}
-          onRightAnswer={() => console.log('right')}
-          onWrongAnswer={() => console.log('wrong')}
-        />
+      {responseData && responseData.questions.length > currentQuestion && (
+        <>
+          <QuestionWrapper
+            question={responseData.questions[currentQuestion]}
+            answer={responseData.answers[currentQuestion]}
+            onNextQuestion={onNextQuestion}
+          />
+          <span>{`${currentQuestion + 1}/${responseData.questions.length}`}</span>
+        </>
       )}
-
+      {responseData && currentQuestion >= responseData.questions.length && (
+        <span>{`Your score is ${rightAnswers} out of ${responseData.questions.length}`}</span>
+      )}
     </div>
 
   )

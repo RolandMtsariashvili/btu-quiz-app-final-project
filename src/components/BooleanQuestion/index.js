@@ -5,14 +5,12 @@ const BooleanQuestion = ({
   answer,
   onRightAnswer,
   onWrongAnswer,
-  onNextQuestion,
 }) => {
   const [usersAnswer, setUsersAnswer] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     usersAnswer === String(answer.answer) ? onRightAnswer() : onWrongAnswer();
-    onNextQuestion();
   }
 
   return (

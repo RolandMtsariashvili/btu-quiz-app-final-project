@@ -5,14 +5,12 @@ const SingleQuestion = ({
   answer,
   onRightAnswer,
   onWrongAnswer,
-  onNextQuestion
 }) => {
   const [selectedAnswer, setSelectedAnswer] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     answer.answer === +selectedAnswer ? onRightAnswer() : onWrongAnswer();
-    onNextQuestion();
   }
 
   return (
